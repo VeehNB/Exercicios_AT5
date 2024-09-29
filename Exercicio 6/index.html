@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Cadastro</title>
+    <style>
+        body {
+            background-color: #F0F0F0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .form-container {
+            background-color: #E6E6FA;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 340px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #6A5ACD;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #4B0082;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 96%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #9370DB;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #6A5ACD;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .aprovado {
+            background-color: #90EE90;
+        }
+
+        .reprovado {
+            background-color: #FFCCCB;
+        }
+
+        .avaliacao-final {
+            background-color: #FFD700;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Cadastro</h2>
+        <form id="form">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" required>
+
+            <label for="rgm">RGM:</label>
+            <input type="text" id="rgm" required>
+
+            <label for="notaParcial">Nota Parcial (máx 2):</label>
+            <input type="number" id="notaParcial" max="2" min="0" required>
+
+            <label for="notaExercicios">Nota Exercícios (máx 1):</label>
+            <input type="number" id="notaExercicios" max="1" min="0" required>
+
+            <label for="notaProjeto">Nota Projeto (máx 2):</label>
+            <input type="number" id="notaProjeto" max="2" min="0" required>
+
+            <label for="notaRegimental">Nota Regimental (máx 5):</label>
+            <input type="number" id="notaRegimental" max="5" min="0" required>
+
+            <button type="button" onclick="cadastrar()">Cadastrar</button><br><br>
+            <button type="button" onclick="exibirDados()">Mostrar Dados</button>
+        </form>
+
+        <table id="tabela" style="display: none;">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>RGM</th>
+                    <th>Nota Final</th>
+                    <th>Conceito</th>
+                </tr>
+            </thead>
+            <tbody id="tabela-corpo"></tbody>
+        </table>
+    </div>
+
+    <script>
+        const nomes = [];
+        const rgms = [];
+        const notasParcial = [];
+        const notasExercicios = [];
+        const notasProjeto = [];
+        const notasRegimental = [];
+
+        function cadastrar() {
+            const nome = document.getElementById('nome').value;
+            const rgm = document.getElementById('rgm').value;
+            const notaParcial = parseFloat(document.getElementById('notaParcial').value);
+            const notaExercicios = parseFloat(document.getElementById('notaExercicios').value);
+            const notaProjeto = parseFloat(document.getElementById('notaProjeto').value);
+            const notaRegimental = parseFloat(document.getElementById('notaRegimental').value);
+
+            nomes.push(nome);
+            rgms.push(rgm);
+            notasParcial.push(notaParcial);
+            notasExercicios.push(notaExercicios);
+            notasProjeto.push(notaProjeto);
+            notasRegimental.push(notaRegimental);
+
+            document.getElementById('form').reset();
+        }
+
+        function calcularNotaFinal(notaParcial, notaExercicios, notaProjeto, notaRegimental) {
+            return notaParcial + notaExercicios + notaProjeto + notaRegimental;
+        }
+
+        function obterConceito(notaFinal) {
+            if (notaFinal >= 6) return 'Aprovado';
+            if (notaFinal < 6 && notaFinal >= 3) return 'Avaliação Final';
+            return 'Reprovado';
+        }
+
+        function exibirDados() {
+            const corpoTabela = document.getElementById('tabela-corpo');
+            corpoTabela.innerHTML = '';
+            document.getElementById('tabela').style.display = 'table';
+
+            for (let i = 0; i < nomes.length; i++) {
+                const notaFinal = calcularNotaFinal(notasParcial[i], notasExercicios[i], notasProjeto[i], notasRegimental[i]);
+                const conceito = obterConceito(notaFinal);
+                const novaLinha = document.createElement('tr');
+
+                novaLinha.innerHTML = `
+                    <td>${nomes[i]}</td>
+                    <td>${rgms[i]}</td>
+                    <td>${notaFinal.toFixed(2)}</td>
+                    <td class="${conceito === 'Aprovado' ? 'aprovado' : conceito === 'Reprovado' ? 'reprovado' : 'avaliacao-final'}">${conceito}</td>
+                `;
+                corpoTabela.appendChild(novaLinha);
+            }
+        }
+    </script>
+</body>
+</html>

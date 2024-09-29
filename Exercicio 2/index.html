@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela Dinâmica</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        table {
+            margin: auto;
+            border-collapse: collapse;
+        }
+
+        td {
+            padding: 15px;
+            color: black;
+        }
+
+        .par {
+            background-color: green;
+        }
+
+        .impar {
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+    <h2>Gerar Tabela Dinâmica</h2>
+    <button onclick="gerarTabela()">Criar Tabela</button>
+    <div id="tabelaContainer"></div>
+
+    <script>
+        function gerarTabela() {
+            let linhas = parseInt(prompt("Digite o número de linhas:"));
+            let colunas = parseInt(prompt("Digite o número de colunas:"));
+            document.getElementById("tabelaContainer").innerHTML = "";
+            let tabela = document.createElement("table");
+
+            for (let i = 0; i < linhas; i++) {
+                let row = tabela.insertRow();
+                for (let j = 0; j < colunas; j++) {
+                    let cell = row.insertCell();
+                    cell.textContent = `(${i + 1}, ${j + 1})`;
+                    cell.className = (j % 2 === 0) ? "par" : "impar";
+                }
+            }
+
+            document.getElementById("tabelaContainer").appendChild(tabela);
+        }
+    </script>
+</body>
+</html>

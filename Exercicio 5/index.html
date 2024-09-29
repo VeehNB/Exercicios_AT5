@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página com Abas, Cronômetro e Slideshow</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .tabs {
+            display: flex;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            background-color: #f0f0f0;
+            margin-right: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .tab.active {
+            background-color: #d0d0d0;
+            font-weight: bold;
+        }
+        .content {
+            display: none;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px;
+        }
+        .content.active {
+            display: block;
+        }
+        .slideshow {
+            position: relative;
+            max-width: 500px;
+            margin: auto;
+        }
+        .slideshow img {
+            width: 100%;
+            display: none;
+        }
+        .slideshow img.active {
+            display: block;
+        }
+        .nav-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="tabs">
+        <div class="tab active" onclick="showTab(0)">Cronômetro</div>
+        <div class="tab" onclick="showTab(1)">Slideshow</div>
+        <div class="tab" onclick="showTab(2)">Tabuada</div>
+    </div>
+
+    <div class="content active" id="cronometro">
+        <h2>Cronômetro</h2>
+        <div id="timer">0</div>
+    </div>
+
+    <div class="content" id="slideshow">
+        <h2>Slideshow</h2>
+        <div class="slideshow">
+            <img src="image1.jpg" class="active" alt="Imagem 1">
+            <img src="image2.jpg" alt="Imagem 2">
+            <img src="image3.jpg" alt="Imagem 3">
+            <img src="image4.jpg" alt="Imagem 4">
+            <img src="image5.jpg" alt="Imagem 5">
+        </div>
+        <button class="nav-button" onclick="prevImage()">Anterior</button>
+        <button class="nav-button" onclick="nextImage()">Próximo</button>
+    </div>
+
+    <div class="content" id="tabuada">
+        <h2>Tabuada</h2>
+        <input type="number" id="numero" placeholder="Digite um número">
+        <button onclick="mostrarTabuada()">Calcular Tabuada</button>
+        <div id="resultadoTabuada"></div>
+    </div>
+
+    <script>
+        let seconds = 0;
+        setInterval(() => {
+            seconds++;
+            document.getElementById('timer').innerText = seconds;
+        }, 1000);
+
+        function showTab(index) {
+            const contents = document.querySelectorAll('.content');
+            const tabs = document.querySelectorAll('.tab');
+
+            contents.forEach((content, i) => {
+                content.classList.remove('active');
+                tabs[i].classList.remove('active');
+                if (i === index) {
+                    content.classList.add('active');
+                    tabs[i].classList.add('active');
+                }
+            });
+        }
+
+        let currentImageIndex = 0;
+        const images = document.querySelectorAll('.slideshow img');
+
+        function showImage(index) {
+            images.forEach((img, i) => {
+                img.classList.remove('active');
+                if (i === index) {
+                    img.classList.add('active');
+                }
+            });
+        }
+
+        function nextImage() {
+            currentImageIndex = (currentImageIndex + 1) % images.length;
+            showImage(currentImageIndex);
+        }
+
+        function prevImage() {
+            currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+            showImage(currentImageIndex);
+        }
+
+        function mostrarTabuada() {
+            const numero = document.getElementById('numero').value;
+            let resultado = '';
+            for (let i = 1; i <= 10; i++) {
+                resultado += `${numero} x ${i} = ${numero * i}<br>`;
+            }
+            document.getElementById('resultadoTabuada').innerHTML = resultado;
+        }
+    </script>
+</body>
+</html>

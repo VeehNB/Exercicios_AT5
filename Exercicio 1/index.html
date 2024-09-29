@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela de Nomes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #CCCCCC;
+            text-align: center;
+            padding: 20px;
+        }
+
+        table {
+            margin: auto;
+            border-collapse: collapse;
+            background-color: #CCCCCC;
+        }
+
+        th {
+            font-size: 15px;
+            font-weight: 700;
+            background-color: #000033;
+            color: #CCCCCC;
+            padding: 10px;
+        }
+
+        td {
+            font-size: 14px;
+            background-color: #000066;
+            color: #CCCCCC;
+            padding: 8px;
+            border: 1px solid #999;
+        }
+    </style>
+</head>
+<body>
+    <h2>Insira os Nomes</h2>
+    <button onclick="adicionarNomes()">Adicionar Nomes</button>
+    <table>
+        <thead>
+            <tr>
+                <th>Índice</th>
+                <th>Nome</th>
+            </tr>
+        </thead>
+        <tbody id="tabelaNomes">
+        </tbody>
+    </table>
+
+    <script>
+        function adicionarNomes() {
+            let nomes = []; 
+            let index = 1; 
+
+            while (true) {
+                let nome = prompt("Digite um nome (ou cancele para finalizar):"); 
+
+                if (nome === null) { 
+                    break; 
+                }
+
+                if (nome.trim() !== "") { 
+                    nomes.push(nome); 
+                }
+            }
+
+            const tabela = document.getElementById("tabelaNomes"); 
+            tabela.innerHTML = ""; 
+
+            for (let i = 0; i < nomes.length; i++) {
+                const row = tabela.insertRow(); 
+                const cellIndex = row.insertCell(0); 
+                const cellNome = row.insertCell(1);
+
+                cellIndex.textContent = index++; 
+                cellNome.textContent = nomes[i]; 
+            }
+        }
+    </script>
+</body>
+</html>
